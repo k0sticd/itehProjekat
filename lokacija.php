@@ -3,7 +3,32 @@ require "php/config.php";
 require "korisnik/template/header.php";
 ?>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyANEoZ8RYqsd3TLyJX6CS1hcADO4wewpAg&sensor=true"></script>
+<script>
+    function initialize() {
+        var mapOptions = {
+            center: new google.maps.LatLng(44.7981873,20.4689813),
+            zoom: 13,
+            zoomControl: true,
+            zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT }
 
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+        var url = "http://localhost/projekat/lokacije.json";
+        var myloc = new Array();
+        $.getJSON(url, function(lokacije) {
+            $.each (lokacije.marker,function(i, marker){
+                kreirajMarker = new google.maps.Marker({
+                    position: new google.maps.LatLng(marker.latitude,marker.longitude),
+                    map: map,
+                    icon: 'img/logolokacija.png', 
+                    title: marker.naziv
+                });
+            })
+        });
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
 
   <body id="main_body">
     <div class="container">
